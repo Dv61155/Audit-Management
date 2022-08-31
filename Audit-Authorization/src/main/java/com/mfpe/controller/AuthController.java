@@ -17,8 +17,6 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.mfpe.exception.EmptyInputException;
-import com.mfpe.exception.ProjectManagerNotFoundException;
 import com.mfpe.model.AuthenticationRequest;
 import com.mfpe.model.AuthenticationResponse;
 import com.mfpe.model.ProjectManagerDetails;
@@ -103,12 +101,12 @@ public class AuthController {
 				logger.info("Successfully validated the jwt and sending response back!");
 			}
 			else {
-				response = new ResponseEntity<AuthenticationResponse>(authenticationResponse, HttpStatus.OK);
+				response = new ResponseEntity<AuthenticationResponse>(authenticationResponse, HttpStatus.FORBIDDEN);
 				logger.error("JWT Token validation failed!");
 			}
 		}catch (Exception e) {
 //			logger.error(e.getMessage());
-			response = new ResponseEntity<AuthenticationResponse>(authenticationResponse, HttpStatus.OK);
+			response = new ResponseEntity<AuthenticationResponse>(authenticationResponse, HttpStatus.BAD_REQUEST);
 			logger.error("Exception occured whil validating JWT : Exception info : " + e.getMessage());
 		}
 		logger.info("-------- Exiting /validate");

@@ -10,9 +10,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
-import com.mfpe.filter.JwtRequestFilter;
 import com.mfpe.service.ProjectManagerDetailsService;
 
 
@@ -22,8 +19,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	@Autowired
 	private ProjectManagerDetailsService projectManagerDetailsService;
 	
-	@Autowired
-	private JwtRequestFilter jwtRequestFilter;
 	
 	@Bean
 	public PasswordEncoder passwordEncoder() {
@@ -59,6 +54,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		.and()
 		.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);	// stopping default session creation
 		
-		http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);	// adding the filter
-	}
+		}
 }
