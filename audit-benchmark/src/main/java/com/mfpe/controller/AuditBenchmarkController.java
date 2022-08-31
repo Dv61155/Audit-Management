@@ -31,7 +31,7 @@ public class AuditBenchmarkController {
 
 	
 	// Endpoint to retrieve the Audit Benchmark details
-	@GetMapping("/AuditBenchmark")
+	@GetMapping("/auditBenchmark")
 	public List<AuditBenchmark> getAuditBenchmark(@RequestHeader("Authorization") String jwt) {
 		List<AuditBenchmark> auditBenchmarks = new ArrayList<>();
 		
@@ -48,6 +48,6 @@ public class AuditBenchmarkController {
 	
 	@GetMapping("health-check")
 	public String healthCheck() {
-		return "Audit Benchmark Microservice is working fine !";
+		return "Audit Benchmark Microservice is Active";
 	}
 }

@@ -47,7 +47,7 @@ public class AuditSeverityController {
 	}
 
 	//It is to check the severity of the audit and it returns the execution status of the particular project 
-	@PostMapping("/ProjectExecutionStatus")
+	@PostMapping("/projectExecutionStatus")
 	public ResponseEntity<?> auditSeverity(@RequestHeader("Authorization") String jwt,
 				@RequestBody AuditRequest auditRequest){
 
@@ -76,12 +76,12 @@ public class AuditSeverityController {
 			// her saving response in DB
 			auditResponse = auditResponseService.saveAuditResponse(auditResponse,auditRequest);
 			
-			//logger.info("AuditResponse successfully created!!");
+			logger.info("AuditResponse successfully created!!");
 			
 			response = new ResponseEntity<AuditResponse>(auditResponse, HttpStatus.OK);
 		}
 		else {
-			//logger.error("Failed to validate the JWT :: " + jwt);
+			logger.error("Failed to validate the JWT :: " + jwt);
 			response = new ResponseEntity<>(auditResponse,HttpStatus.FORBIDDEN);
 		}
 		return response;
