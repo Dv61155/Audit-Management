@@ -20,6 +20,7 @@ public class ExceptionHandlerAdvice {
 	public ResponseEntity<?> exception(Exception e) {
 		logger.error(e.getMessage());
 		List<String> dummyList = new ArrayList<>();
-		return new ResponseEntity<>(dummyList, HttpStatus.FORBIDDEN);
+		return new ResponseEntity<>(dummyList, HttpStatus.BAD_REQUEST);
 	}
+	
 }

@@ -37,9 +37,7 @@ public class AuditResponse {
 	@NotEmpty(message = "RemedialAction is required")
 	private String remedialActionDuration;
 	
-	public void setCreationDateTime(Date creationDateTime2) {
-		this.creationDateTime = creationDateTime2;
-	}
+
 
 	
 }

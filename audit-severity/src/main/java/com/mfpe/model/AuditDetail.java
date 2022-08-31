@@ -1,5 +1,6 @@
 package com.mfpe.model;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.validation.constraints.NotEmpty;
@@ -17,8 +18,10 @@ public class AuditDetail {
 	 @NotEmpty(message = "AuditType is required")
 	 private String auditType;
 	 @NotEmpty(message = "Date is required")
-	 private String auditDate;
+	 private Date auditDate;
 	 @NotEmpty(message = "List Of questions is required")
 	 private List<AuditQuestion> auditQuestions;
-	 	 
+	 
+	 
+	 
 }

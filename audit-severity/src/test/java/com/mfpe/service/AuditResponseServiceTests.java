@@ -32,7 +32,7 @@ class AuditResponseServiceTests {
 	
 	AuditResponse auditResponse = new AuditResponse(1,"ManagerName","ProjectName", new Date(), "ProjectExecutionStatus","RemedialActionDuration");
 	List<AuditQuestion> questions = new ArrayList<>();	
-	String date = "26/08/2022";
+	Date date = new Date();
 	List<AuditQuestion> questionResponseList = new ArrayList<>();	
 	AuditRequest auditRequest = new AuditRequest("ProjectName","ManagerName",new AuditDetail("Internal",date,questionResponseList));
 	

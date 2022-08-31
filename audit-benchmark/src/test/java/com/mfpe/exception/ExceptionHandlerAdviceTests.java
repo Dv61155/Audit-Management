@@ -11,8 +11,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import com.mfpe.model.AuthenticationResponse;
-
 @SpringBootTest
 class ExceptionHandlerAdviceTests {
 
@@ -26,9 +24,9 @@ class ExceptionHandlerAdviceTests {
 	
 	@Test
 	public void Exceptiontest() {
-		AuthenticationResponse authenticationResponse = new AuthenticationResponse("Invalid", "Invalid", false);
+		List<String> dummyList=new ArrayList<>();
 		Exception e=new Exception();
-		assertEquals(new ResponseEntity<>(authenticationResponse,HttpStatus.FORBIDDEN),exceptionHandlerAdvice.exception(e));
+		assertEquals(new ResponseEntity<>(dummyList,HttpStatus.OK),exceptionHandlerAdvice.exception(e));
 	}
 
 }

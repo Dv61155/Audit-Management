@@ -25,7 +25,7 @@ public class AuditDetailTests {
 	public void testGetterAndSetter() {
 		List<AuditQuestion> auditQuestion = new ArrayList<>();
 		AuditDetail auditDetail = new AuditDetail();
-		String date = "26/08/2000";
+		Date date = new Date();
 		auditDetail.setAuditDate(date);
 		auditDetail.setAuditType("Internal");
 		auditDetail.setAuditQuestions(auditQuestion);

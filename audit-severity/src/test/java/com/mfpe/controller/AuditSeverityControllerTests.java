@@ -48,7 +48,7 @@ class AuditSeverityControllerTests {
 	@Test
 	public void testAuditSeverityStatus() {
 		
-		String date = "26/08/2000";
+		Date date = new Date();
 		
 		List<AuditBenchmark> benchmarkList = new ArrayList<>();
 		benchmarkList.add(new AuditBenchmark(1,"Internal",3));
