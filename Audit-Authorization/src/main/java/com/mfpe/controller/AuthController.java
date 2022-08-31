@@ -10,13 +10,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mfpe.exception.EmptyInputException;
+import com.mfpe.exception.ProjectManagerNotFoundException;
 import com.mfpe.model.AuthenticationRequest;
 import com.mfpe.model.AuthenticationResponse;
 import com.mfpe.model.ProjectManagerDetails;
@@ -38,40 +39,31 @@ public class AuthController {
 	private JwtService jwtService;
 	
 	Logger logger = LoggerFactory.getLogger("Auth-Controller-Logger");
-	
-	
-	    @GetMapping("/health-check")
-		public String healthCheck() {
-			return "Audit Authorization Microservice is Active";
-		}
-	
-	
-	
 	// authentication - for the very first login
 	@PostMapping("/authenticate")
 	public ResponseEntity<String> generateJwt(@Valid @RequestBody AuthenticationRequest request){
+		
 		ResponseEntity<String> response = null;
 		
 		// authenticating the User-Credentials
-		try {
-			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
-			// else when it authenticates successfully
-			final ProjectManagerDetails projectManagerDetails = projectManagerDetailsService
-																	.loadUserByUsername(request.getUsername());
+		authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
+		
+		// when it authenticates successfully
+		final ProjectManagerDetails projectManagerDetails = projectManagerDetailsService
+																.loadUserByUsername(request.getUsername());
+		
+		
+		// returning the token as response
+		final String jwt = jwtService.generateToken(projectManagerDetails);	
+		
+	
+		logger.info("Authenticated User :: " + projectManagerDetails);
+		
+		response = new ResponseEntity<String>(jwt, HttpStatus.OK);
+		
+		logger.info("Successfully Authenticated user!");
 			
-			final String jwt = jwtService.generateToken(projectManagerDetails);	// returning the token as response
-			
-			//test
-			logger.info("Authenticated User :: " + projectManagerDetails);
-			
-			response = new ResponseEntity<String>(jwt, HttpStatus.OK);
-			
-			logger.info("Successfully Authenticated user!");
-			
-		}catch (Exception e) {
-			logger.error(e.getMessage() + "!! info about request-body : " + request);
-			response = new ResponseEntity<String>("Not Authorized Project Manager", HttpStatus.FORBIDDEN);
-		}
+	
 		logger.info("-------- Exiting /authenticate");
 		return response;
 	}
@@ -113,6 +105,7 @@ public class AuthController {
 			logger.error("Exception occured whil validating JWT : Exception info : " + e.getMessage());
 		}
 		logger.info("-------- Exiting /validate");
+	//	System.out.println("*********** "+response);
 		return response;
 	}
 	
