@@ -30,9 +30,8 @@ class AuthorizationServiceTests {
 
 	@Test
 	public void testValidateJwt() {
-		AuthenticationResponse authenticationResponse = new AuthenticationResponse("null", "null", true);
-		ResponseEntity<AuthenticationResponse> response = new ResponseEntity<AuthenticationResponse>(
-				authenticationResponse, HttpStatus.OK);
+		AuthenticationResponse authenticationResponse = new AuthenticationResponse("null","null",true);
+		ResponseEntity<AuthenticationResponse> response = new ResponseEntity<AuthenticationResponse>(authenticationResponse, HttpStatus.OK);
 		when(authClient.validate("jwt")).thenReturn(response);
 		assertTrue(authorizationServiceImpl.validateJwt("jwt"));
 	}

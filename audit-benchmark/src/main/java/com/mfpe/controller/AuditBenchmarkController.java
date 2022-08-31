@@ -46,5 +46,8 @@ public class AuditBenchmarkController {
 		return auditBenchmarks;
 	}
 	
-	
+	@GetMapping("health-check")
+	public String healthCheck() {
+		return "Audit Benchmark Microservice is working fine !";
+	}
 }

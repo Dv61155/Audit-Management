@@ -10,8 +10,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-
+@AllArgsConstructor
 @Data
+@NoArgsConstructor
 public class AuditType {
 	
 	@NotEmpty(message = "AuditType is required")

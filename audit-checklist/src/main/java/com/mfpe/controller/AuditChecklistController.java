@@ -37,8 +37,13 @@ public class AuditChecklistController {
 	
 	Logger logger = LoggerFactory.getLogger("Checklist-Controller-Logger");
 	
+	@GetMapping("health-check")
+	public String healthCheck() {
+		return "Audit Checklist Microservice is Active";
+	}
+	
 	@PostMapping(value = "/checklistquestions")
-	public List<Question> auditCheckListQuestions(@RequestHeader("Authorization") String jwt, @RequestBody(required=true) AuditType auditType) {
+	public List<Question> auditCheckListQuestions(@RequestHeader("Authorization") String jwt, @RequestBody AuditType auditType) {
 		List<Question> questions = new ArrayList<Question>();
 		
 		logger.info("from header JWT :: " + jwt);

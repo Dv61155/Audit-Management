@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -39,6 +40,12 @@ public class AuthController {
 	private JwtService jwtService;
 	
 	Logger logger = LoggerFactory.getLogger("Auth-Controller-Logger");
+	
+	@GetMapping("health-check")
+	public String healthCheck() {
+		return "Audit Benchmark Microservice is working fine !";
+	}
+	
 	// authentication - for the very first login
 	@PostMapping("/authenticate")
 	public ResponseEntity<String> generateJwt(@Valid @RequestBody AuthenticationRequest request){

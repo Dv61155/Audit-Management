@@ -11,7 +11,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 @Component
-
+@AllArgsConstructor
+@NoArgsConstructor
 @Data
 public class AuthenticationResponse {
 	@NotEmpty(message = "Name is required")

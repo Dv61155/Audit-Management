@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -39,6 +40,11 @@ public class AuditSeverityController {
 	private AuthorizationService authorizationService;
 
 	Logger logger = LoggerFactory.getLogger("Severity-Controller-Logger");
+	
+	@GetMapping("health-check")
+	public String healthCheck() {
+		return "Audit Benchmark Microservice is working fine !";
+	}
 
 	//It is to check the severity of the audit and it returns the execution status of the particular project 
 	@PostMapping("/ProjectExecutionStatus")

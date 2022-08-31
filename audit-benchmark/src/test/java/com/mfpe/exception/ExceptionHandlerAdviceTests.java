@@ -26,7 +26,7 @@ class ExceptionHandlerAdviceTests {
 	public void Exceptiontest() {
 		List<String> dummyList=new ArrayList<>();
 		Exception e=new Exception();
-		assertEquals(new ResponseEntity<>(dummyList,HttpStatus.OK),exceptionHandlerAdvice.exception(e));
+		assertEquals(new ResponseEntity<>(dummyList,HttpStatus.FORBIDDEN),exceptionHandlerAdvice.exception(e));
 	}
 
 }

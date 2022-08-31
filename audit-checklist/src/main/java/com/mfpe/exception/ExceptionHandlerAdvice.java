@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class ExceptionHandlerAdvice {
 	
-	Logger logger = LoggerFactory.getLogger("Benchmark-Exception-Handler-Advice");
+	Logger logger = LoggerFactory.getLogger("Checklist-Exception-Handler-Advice");
 	List<String> dummyList = new ArrayList<>();
 	
 	// here it handles if any exception occurs during validation...
@@ -22,6 +22,6 @@ public class ExceptionHandlerAdvice {
 	@ExceptionHandler(value = Exception.class)
 	public ResponseEntity<?> exception(Exception e) {
 		logger.error(e.getMessage());
-		return new ResponseEntity<>(this.dummyList, HttpStatus.OK);
+		return new ResponseEntity<>(this.dummyList, HttpStatus.BAD_REQUEST);
 	}
 }
