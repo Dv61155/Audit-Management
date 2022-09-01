@@ -1,4 +1,4 @@
-package com.mfpe.model;
+ package com.mfpe.model;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -12,18 +12,16 @@ class AuthenticationResponseTest {
 	public void testGetterAndSetter()
 	{
 		AuthenticationResponse obj=new AuthenticationResponse();
-		obj.setName("Harsh");;
-		obj.setProjectName("audit-authenticate");;
-		obj.setValid(true);;
+		obj.setName("Harsh");
+		obj.setValid(true);
 		assertEquals("Harsh",obj.getName());
-		assertEquals("audit-authenticate",obj.getProjectName());
 		assertEquals(true,obj.isValid());
 	}
 	
 	@Test
 	public void testconstructorAndTostring()
 	{
-		AuthenticationResponse obj=new AuthenticationResponse("Harsh","audit-authenticate",true);
-		assertEquals("AuthenticationResponse(name=Harsh, projectName=audit-authenticate, isValid=true)",obj.toString());
+		AuthenticationResponse obj=new AuthenticationResponse("Harsh",true);
+		assertEquals("AuthenticationResponse(name=Harsh, isValid=true)",obj.toString());
 	}
 }

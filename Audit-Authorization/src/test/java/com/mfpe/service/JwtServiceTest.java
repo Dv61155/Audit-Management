@@ -2,41 +2,60 @@ package com.mfpe.service;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.springframework.boot.test.context.SpringBootTest;
+import java.util.ArrayList;
 
-import com.mfpe.model.AuthenticationRequest;
-import com.mfpe.model.ProjectManager;
-import com.mfpe.model.ProjectManagerDetails;
-import com.mfpe.repository.ProjectManagerRepo;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 
 @SpringBootTest
 class JwtServiceTest {
 
-	ProjectManagerDetails request;
+	@Autowired
+	JwtService jwtUtil;
 
-	@InjectMocks
-	JwtService jwtService;
+	String generateToken = "";
+	UserDetails userdetails;
 
-	@Mock
-	ProjectManagerRepo projectRepo;
+	@BeforeEach
+	void beforEach() {
+		userdetails = new User("admin1", "admin1", new ArrayList<>());
+		generateToken = jwtUtil.generateToken(userdetails);
+	}
 
-	
 	@Test
-	public void generateTokenTest() {
-		request = new ProjectManagerDetails(1,"admin", "admin","pass","project");
-		String generateToken = jwtService.generateToken(request);
+	void generateTokenTest() {
 		assertNotNull(generateToken);
 	}
 
 	@Test
-	public void validateTokenTest() {
-		request = new ProjectManagerDetails(1,"admin", "admin", "pass","project");
-		String generateToken = jwtService.generateToken(request);
-		Boolean validateToken = jwtService.validateToken(generateToken,request);
+	void validateTokenTestWithValidToken() {
+		Boolean validateToken = jwtUtil.validateToken(generateToken, userdetails);
 		assertEquals(true, validateToken);
+	}
+
+	@Test
+	void validateTokenTestWithInvalidToken() {
+		try {
+			Boolean validateToken = jwtUtil.validateToken("token", userdetails);
+			assertEquals(false, validateToken);
+		} catch (Exception e) {
+
+		}
+	}
+
+	@Test
+	void validateTokenWithNameTest() {
+		Boolean validateToken = jwtUtil.validateToken(generateToken, userdetails);
+		assertEquals(true, validateToken);
+	}
+
+	@Test
+	void getUsernameFromTokenTest() {
+		assertEquals("admin1", jwtUtil.extractUsername(generateToken));
 	}
 
 }

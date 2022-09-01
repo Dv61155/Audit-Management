@@ -1,18 +1,16 @@
 package com.mfpe.service;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.when;
-
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import com.mfpe.exception.ProjectManagerNotFoundException;
-import com.mfpe.model.ProjectManager;
-import com.mfpe.model.ProjectManagerDetails;
 import com.mfpe.repository.ProjectManagerRepo;
 
 @ExtendWith(MockitoExtension.class)
@@ -25,25 +23,14 @@ public class ProjectManagerServiceTest {
 	private ProjectManagerService projectManagerService; // the real one to assert
 
 	@Test
-	public void getProjectManagerByUserNameTest() throws ProjectManagerNotFoundException {
-		String username1 = "user1";
-		ProjectManager projectManagerDetails = null;
-		// test ProjectManager object -- for correct
-		projectManagerDetails = new ProjectManager();
-		projectManagerDetails.setId(1);
-		projectManagerDetails.setName("user1"); // same username
-		projectManagerDetails.setPassword("abcd1234");
-		projectManagerDetails.setProjectName("Project1");
-		when(projectManagerRepo.getProjectManagerByUserName(username1)).thenReturn(projectManagerDetails);
-		assertEquals(projectManagerDetails, projectManagerService.getProjectManagerByUserName(username1));
+	public void testLoadUserByUsernameBadCredentials() {
+		assertThatThrownBy(() -> projectManagerService.loadUserByUsername("fake"))
+				.isInstanceOf(UsernameNotFoundException.class);
+	}
 
-		// test ProjectManager object -- for wrong
-		final String username2 = "invalidUser1";
-		projectManagerDetails = null;
-		when(projectManagerRepo.getProjectManagerByUserName(username2))
-				.thenThrow(ProjectManagerNotFoundException.class);
-		assertThrows(ProjectManagerNotFoundException.class,
-				() -> projectManagerService.getProjectManagerByUserName(username2));
-
+	@Test
+	public void testLoadUserByUsernameRightCredentials() {
+		UserDetails userDetails = projectManagerService.loadUserByUsername("admin1");
+		assertEquals("admin1", userDetails.getUsername());
 	}
 }
