@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Component
-@Data
 @NoArgsConstructor
 public class EmptyInputException extends RuntimeException {
 	/**
