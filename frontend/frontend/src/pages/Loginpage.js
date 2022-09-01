@@ -52,7 +52,7 @@ export default function Loginpage() {
             //  const response={
             //     username: "rohit12",
             //     password: "rohit12",
-            // }
+            //}
             // localStorage.removeItem("access");
             // localStorage.setItem("access", response);
             // localStorage.setItem("isLoggedIn", true);
