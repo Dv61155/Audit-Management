@@ -41,7 +41,7 @@ public class AuthController {
 	
 	@GetMapping("health-check")
 	public String healthCheck() {
-		return "Audit Benchmark Microservice is Active";
+		return "Audit Authorization Microservice is Active";
 	}
 	
 	// authentication - for the very first login

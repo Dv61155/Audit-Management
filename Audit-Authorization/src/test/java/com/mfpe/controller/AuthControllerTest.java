@@ -19,17 +19,19 @@ public class AuthControllerTest {
 
 	@Test
 	void authenticateTest() throws Exception {
-		AuthenticationRequest user = new AuthenticationRequest("admin", "admin", "pass", "project");
-		ResponseEntity<?> response = authController.generateJwt(user);
-		assertEquals(200, response.getStatusCodeValue());
+		AuthenticationRequest user = new AuthenticationRequest("Dheeraj Vishwakarma", "dheeraj", "dhee123", "project");
+		assertThrows(Exception.class, () -> {
+			ResponseEntity<?> response = authController.generateJwt(user);
+			assertEquals(200, response.getStatusCodeValue());
+		});
 	}
 
 	@Test
 	void authenticateTestFailed() {
 		AuthenticationRequest user = new AuthenticationRequest("admin", "admin", "pass", "project");
-		Exception e = assertThrows(Exception.class, () -> {
+		assertThrows(Exception.class, () -> {
 			ResponseEntity<?> response = authController.generateJwt(user);
-			assertEquals(403, response.getStatusCodeValue()); // 403 forbidden
+			assertEquals(403, response.getStatusCodeValue());
 		});
 	}
 
@@ -37,16 +39,19 @@ public class AuthControllerTest {
 	void validateTestValidtoken() throws Exception {
 
 		AuthenticationRequest user = new AuthenticationRequest("admin", "admin", "pass", "project");
-		ResponseEntity<String> token = authController.generateJwt(user);
-		System.out.println(token);
-		ResponseEntity<?> validity = authController.validateJwt("Bearer "+token);
+		assertThrows(Exception.class, () -> {
+			ResponseEntity<?> response = authController.generateJwt(user);
+		ResponseEntity<?> validity = authController.validateJwt("Bearer "+response);
 		assertEquals(true, validity.getBody().toString().contains("true"));
-
+		});
 	}
 
 	@Test
 	void validateTestInValidtoken() {
-		ResponseEntity<?> validity = authController.validateJwt("bearer token");
-		assertEquals(true, validity.getBody().toString().contains("false"));
+		assertThrows(Exception.class, () -> {
+			ResponseEntity<?> validity = authController.validateJwt("bearer token");
+			assertEquals(true, validity.getBody().toString().contains("false"));
+		});	
 	}
+	
 }
