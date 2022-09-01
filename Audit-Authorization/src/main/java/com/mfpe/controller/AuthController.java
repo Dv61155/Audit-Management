@@ -32,43 +32,35 @@ public class AuthController {
 	private AuthenticationManager authenticationManager;
 	
 	@Autowired
-	private ProjectManagerService projectManagerDetailsService;
+	private ProjectManagerService projectManagerService;
 	
 	@Autowired
 	private JwtService jwtService;
 	
-	Logger logger = LoggerFactory.getLogger("Auth-Controller-Logger");
+	private static final Logger lOGGER = LoggerFactory.getLogger(AuthController.class);
 	
-	@GetMapping("health-check")
-	public String healthCheck() {
-		return "Audit Benchmark Microservice is Active";
+	@GetMapping(path = "/health")
+	public ResponseEntity<Object> healthCheckup() {
+		lOGGER.info("Health Check ");
+		return new ResponseEntity<>("", HttpStatus.OK);
 	}
 	
 	// authentication - for the very first login
 	@PostMapping("/authenticate")
-	public ResponseEntity<String> generateJwt(@Valid @RequestBody AuthenticationRequest request){
+	public ResponseEntity<String> generateJwt(@Valid @RequestBody AuthenticationRequest request) throws Exception{
 		
 		ResponseEntity<String> response = null;
 		
-		// authenticating the User-Credentials
-		authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
-		
-		// when it authenticates successfully
-		UserDetails userDetails = projectManagerDetailsService.loadUserByUsername(request.getUsername());
-		
-		
-		// returning the token as response
-		String jwt = jwtService.generateToken(userDetails);	
-		
-	
-		logger.info("Authenticated User :: " + userDetails);
-		
+		try {
+			authenticationManager.authenticate(
+					new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
+		} catch (Exception e) {
+			throw new Exception("INVALID_CREDENTIALS", e);
+		}
+		UserDetails userDetails = projectManagerService.loadUserByUsername(request.getUsername());
+		String jwt = jwtService.generateToken(userDetails);
 		response = new ResponseEntity<String>(jwt, HttpStatus.OK);
-		
-		logger.info("Successfully Authenticated user!");
-			
-	
-		logger.info("-------- Exiting /authenticate");
+		lOGGER.info("Successfully Authenticated user!");
 		return response;
 	}
 	
@@ -83,29 +75,30 @@ public class AuthController {
 		jwt = jwt.substring(7);
 		
 		//check token
-		logger.info("--------JWT :: "+jwt);
+		lOGGER.info("--------JWT :: "+jwt);
 		
 		
 		// check the jwt is proper or not
-		UserDetails user = projectManagerDetailsService.loadUserByUsername(jwtService.extractUsername(jwt));
+		UserDetails user = projectManagerService.loadUserByUsername(jwtService.extractUsername(jwt));
 
 		// now validating the jwt
 		try {
+			
 			if(jwtService.validateToken(jwt, user)) {
 				authenticationResponse.setName(user.getUsername());
 				authenticationResponse.setValid(true);
 				response = new ResponseEntity<AuthenticationResponse>(authenticationResponse, HttpStatus.OK);
-				logger.info("Successfully validated the jwt and sending response back!");
+				lOGGER.info("Successfully validated the jwt and sending response back!");
 			}
 			else {
 				response = new ResponseEntity<AuthenticationResponse>(authenticationResponse, HttpStatus.FORBIDDEN);
-				logger.error("JWT Token validation failed!");
+				lOGGER.error("JWT Token validation failed!");
 			}
 		}catch (Exception e) {
 			response = new ResponseEntity<AuthenticationResponse>(authenticationResponse, HttpStatus.BAD_REQUEST);
-			logger.error("Exception occured whil validating JWT : Exception info : " + e.getMessage());
+			lOGGER.error("Exception occured whil validating JWT : Exception info : " + e.getMessage());
 		}
-		logger.info("-------- Exiting /validate");
+		lOGGER.info("-------- Exiting /validate");
 		return response;
 	}
 	

@@ -23,7 +23,7 @@ import io.jsonwebtoken.SignatureException;
 @ControllerAdvice
 public class ExceptionHandlerAdvice extends ResponseEntityExceptionHandler {
 
-	Logger logger = LoggerFactory.getLogger("Auth-Exception-Handler-Advice");
+  	Logger logger = LoggerFactory.getLogger("Auth-Exception-Handler-Advice");
 
 	// For bad credentials
 	@ExceptionHandler(BadCredentialsException.class)

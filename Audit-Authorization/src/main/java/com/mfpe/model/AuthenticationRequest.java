@@ -9,14 +9,13 @@ import javax.validation.constraints.NotEmpty;
 import org.springframework.stereotype.Component;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @AllArgsConstructor
 
 @Component
-@Data
+
 @Entity
 @Table(name="project_manager")
 public class AuthenticationRequest {
@@ -35,5 +34,21 @@ public class AuthenticationRequest {
 	
 	@Column(name="project_name")
 	private String projectName;
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
 	
 }
