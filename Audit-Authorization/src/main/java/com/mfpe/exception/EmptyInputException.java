@@ -9,17 +9,17 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class EmptyInputException extends RuntimeException {
 	/**
-	 * If you post empty inputs
-	 */
-	private static final long serialVersionUID = 1L;
-	
-	private String message;
-
-	public EmptyInputException(String message) {
-		super();
-		this.message = message;
-	}
-	
+//	 * If you post empty inputs
+//	 */
+//	private static final long serialVersionUID = 1L;
+//	
+//	private String message;
+//
+//	public EmptyInputException(String message) {
+//		super();
+//		this.message = message;
+//	}
+//	
 	
 
 }

@@ -11,7 +11,7 @@ import com.mfpe.model.AuditBenchmark;
 @FeignClient(value = "auditbenchmark", url = "${ms.benchmark}")
 public interface AuditBenchmarkFeign {
 	
-	@GetMapping("/AuditBenchmark")
+	@GetMapping("/auditbenchmark")
 	public List<AuditBenchmark> getAuditBenchmark(@RequestHeader("Authorization") String jwt); 
 	
 }

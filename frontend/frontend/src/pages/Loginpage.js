@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {Button, Card, Col, Container, Form, InputGroup, Row} from "react-bootstrap";
 import {Navigate, useNavigate} from "react-router-dom";
 import axios from "axios";
@@ -8,7 +8,7 @@ import {toast} from "react-toastify";
 import {UitSignout} from '@iconscout/react-unicons-thinline'
 
 export default function Loginpage() {
-    const [formData, setData] = React.useState({
+    const [data, setData] = React.useState({
         username: "",
         password: "",
     });
@@ -17,15 +17,18 @@ export default function Loginpage() {
         password: "",
     });
     const [validated, setValidated] = React.useState(false);
-    let {username, password} = formData;
+   // let {username, password} = formData;
 
     const navigate = useNavigate();
+    
+    useEffect(()=>{
 
+    },[errorData])
 
     async function fetchData(props) {
         const body = JSON.stringify({
-            username: username,
-            password: password,
+            username: data.username,
+            password: data.password
         });
        
         try {
@@ -62,59 +65,60 @@ export default function Loginpage() {
         } catch (e) {
             console.log("Catch Block")
             console.log(e.response)
+            alert(e.response.data);
             const {response} = e
 
-            switch (response.status) {
-                case 404:
-                    toast.error(response.data.message, {
-                        position: "top-right",
-                        autoClose: 3000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                    });
-                    break;
-                case 400:
-                    console.log(response.data.errors)
-                    for (let error in response.data.errors) {
-                        console.log(response.data.errors[error][0]);
-                        toast.error(response.data.errors[error][0], {
-                            position: "top-right",
-                            autoClose: 3000,
-                            hideProgressBar: false,
-                            closeOnClick: true,
-                            pauseOnHover: true,
-                            draggable: true,
-                            progress: undefined,
-                        });
-                    }
-            }
+            // switch (response.status) {
+            //     case 404:
+            //         toast.error(response.data.message, {
+            //             position: "top-right",
+            //             autoClose: 3000,
+            //             hideProgressBar: false,
+            //             closeOnClick: true,
+            //             pauseOnHover: true,
+            //             draggable: true,
+            //             progress: undefined,
+            //         });
+            //         break;
+            //     case 400:
+            //         console.log(response.data.errors)
+            //         for (let error in response.data.errors) {
+            //             console.log(response.data.errors[error][0]);
+            //             toast.error(response.data.errors[error][0], {
+            //                 position: "top-right",
+            //                 autoClose: 3000,
+            //                 hideProgressBar: false,
+            //                 closeOnClick: true,
+            //                 pauseOnHover: true,
+            //                 draggable: true,
+            //                 progress: undefined,
+            //             });
+            //         }
+            // }
 
         }
     }
 
     const validateForm = () => {
         let errorStatus = true;
-        if (username.length === 0) {
+        if (!data.username.length) {
             setErrorData(prevState => ({...prevState, username: "Username is empty"}));
             errorStatus = false;
             setValidated(true);
-        } else if (username.length <5) {
-            setErrorData(prevState => ({...prevState, username: "Username length must be 6 length"}));
+        }else if (data.username.length <4) {
+            setErrorData(prevState => ({...prevState, username: "Username length must be 5 length"}));
             errorStatus = false;
             setValidated(true);
         } else {
             setErrorData(prevState => ({...prevState, username: ""}))
             errorStatus = true
         }
-        if (password.length === 0) {
+        if (!data.password.length) {
             setErrorData(prevState => ({...prevState, password: "Password is empty"}));
             errorStatus = false;
             setValidated(true);
-        } else if (password.length <=5) {
-            setErrorData(prevState => ({...prevState, password: "Password length must be 6 length"}));
+        } else if (data.password.length <4) {
+            setErrorData(prevState => ({...prevState, password: "Password length must be 5 length"}));
             errorStatus = false;
             setValidated(true);
         } else {
@@ -161,15 +165,14 @@ export default function Loginpage() {
                                                 type={"text"}
                                                 name="username"
                                                 id="username"
-                                                value={username}
+                                                value={data.username}
                                                 onChange={(e) => {
-
                                                     setData({
-                                                        ...formData,
+                                                        ...data,
                                                         [e.target.name]: e.target.value,
-                                                    })
+                                                    });
                                                     validateForm();
-                                                }
+                                                 }
                                                 }
                                                 isInvalid={errorData.username}
                                             />
@@ -188,17 +191,17 @@ export default function Loginpage() {
                                             type={"password"}
                                             name="password"
                                             id="password"
-                                            value={password}
+                                            value={data.password}
                                             onChange={(e) => {
 
                                                 setData({
-                                                    ...formData,
+                                                    ...data,
                                                     [e.target.name]: e.target.value,
-                                                })
+                                                });
                                                 validateForm();
                                             }
                                             }
-                                            isInvalid={errorData.password}
+                                            isInvalid={data.password.length<=4?errorData.password:null}
                                         />
                                         {errorData.password && (
                                             <Form.Control.Feedback type={"invalid"}>
@@ -209,9 +212,10 @@ export default function Loginpage() {
                                     </Form.Group>
 
                                     <Form.Group>
-
+    
                                         <Button
                                             type={"submit"}
+                                            disabled={(data.username.length<5||data.password.length<5)?true:false}
                                             className="btn btn-primary">
                                             <i className="uit uit-signin"></i>
                                             Login

@@ -37,7 +37,7 @@ export const AuditRequest = () => {
         e.preventDefault();
         try {
             const response = await axios.post(
-                `${APIRoutes.AuditCheckList}/AuditCheckListQuestions`,
+                `${APIRoutes.AuditCheckList}/checklistquestions`,
                 {
                     auditType:auditDetails.type
                 },
@@ -74,7 +74,7 @@ export const AuditRequest = () => {
         console.log(formData);
         try {
             const res = await axios.post(
-                `${APIRoutes.AuditSeverity}/ProjectExecutionStatus`,
+                `${APIRoutes.AuditSeverity}/projectexecutionstatus`,
                 formData,
                 {
                     headers:{ 
@@ -127,11 +127,14 @@ export const AuditRequest = () => {
                                                     name="internal"
                                                     value="Internal"
                                                     checked={auditDetails.type === "Internal"}
-                                                    onChange={(e) =>
+                                                    onChange={(e) =>{
+                                                        setAuditResponse({data:null});
+                                                        
                                                         setAuditDetails((prevState) => ({
                                                             ...prevState,
                                                             type: e.target.value,
-                                                        }))
+                                                        }));
+                                                      }
                                                     }
                                                 />
                                                 <Form.Check
@@ -140,8 +143,11 @@ export const AuditRequest = () => {
                                                     name="SOX"
                                                     value="SOX"
                                                     checked={auditDetails.type === "SOX"}
-                                                    onChange={(e) =>
-                                                        setAuditDetails({type: e.target.value})
+                                                    onChange={(e) =>{
+                                                        setAuditResponse({data:null});
+                                                        
+                                                        setAuditDetails({type: e.target.value});
+                                                      }
                                                     }
                                                 />
                                             </Form.Group>

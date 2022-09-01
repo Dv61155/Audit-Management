@@ -41,7 +41,7 @@ public class AuthController {
 	
 	@GetMapping("health-check")
 	public String healthCheck() {
-		return "Audit Authorization Microservice is Active";
+		return "Audit Benchmark Microservice is Active";
 	}
 	
 	// authentication - for the very first login
@@ -102,12 +102,10 @@ public class AuthController {
 				logger.error("JWT Token validation failed!");
 			}
 		}catch (Exception e) {
-//			logger.error(e.getMessage());
 			response = new ResponseEntity<AuthenticationResponse>(authenticationResponse, HttpStatus.BAD_REQUEST);
 			logger.error("Exception occured whil validating JWT : Exception info : " + e.getMessage());
 		}
 		logger.info("-------- Exiting /validate");
-	//	System.out.println("*********** "+response);
 		return response;
 	}
 	
