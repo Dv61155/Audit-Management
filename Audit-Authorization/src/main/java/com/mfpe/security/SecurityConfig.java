@@ -9,20 +9,22 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import com.mfpe.service.ProjectManagerDetailsService;
+import com.mfpe.service.ProjectManagerService;
 
 
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	
 	@Autowired
-	private ProjectManagerDetailsService projectManagerDetailsService;
+	private ProjectManagerService projectManagerDetailsService;
 	
 	
 	@Bean
 	public PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder(10);		// strength of BCrypthPasswordEncoder = 10
+		//return new BCryptPasswordEncoder();
+		return NoOpPasswordEncoder.getInstance();
 	}
 	
 	
@@ -36,7 +38,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.userDetailsService(projectManagerDetailsService).passwordEncoder(passwordEncoder());
+		auth.userDetailsService(projectManagerDetailsService);
 	}
 	
 //	

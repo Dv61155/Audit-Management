@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,9 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.mfpe.model.AuthenticationRequest;
 import com.mfpe.model.AuthenticationResponse;
-import com.mfpe.model.ProjectManagerDetails;
 import com.mfpe.service.JwtService;
-import com.mfpe.service.ProjectManagerDetailsService;
+import com.mfpe.service.ProjectManagerService;
 
 @RestController
 @RequestMapping("/auth")	
@@ -32,7 +32,7 @@ public class AuthController {
 	private AuthenticationManager authenticationManager;
 	
 	@Autowired
-	private ProjectManagerDetailsService projectManagerDetailsService;
+	private ProjectManagerService projectManagerDetailsService;
 	
 	@Autowired
 	private JwtService jwtService;
@@ -54,15 +54,14 @@ public class AuthController {
 		authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
 		
 		// when it authenticates successfully
-		final ProjectManagerDetails projectManagerDetails = projectManagerDetailsService
-																.loadUserByUsername(request.getUsername());
+		UserDetails userDetails = projectManagerDetailsService.loadUserByUsername(request.getUsername());
 		
 		
 		// returning the token as response
-		final String jwt = jwtService.generateToken(projectManagerDetails);	
+		String jwt = jwtService.generateToken(userDetails);	
 		
 	
-		logger.info("Authenticated User :: " + projectManagerDetails);
+		logger.info("Authenticated User :: " + userDetails);
 		
 		response = new ResponseEntity<String>(jwt, HttpStatus.OK);
 		
@@ -77,7 +76,7 @@ public class AuthController {
 	@PostMapping("/validate")
 	public ResponseEntity<AuthenticationResponse> validateJwt(@RequestHeader("Authorization") String jwt){
 		
-		AuthenticationResponse authenticationResponse = new AuthenticationResponse("Invalid", "Invalid", false);
+		AuthenticationResponse authenticationResponse = new AuthenticationResponse("Invalid", false);
 		ResponseEntity<AuthenticationResponse> response = null;
 
 		//first remove Bearer from Header
@@ -88,14 +87,12 @@ public class AuthController {
 		
 		
 		// check the jwt is proper or not
-		final ProjectManagerDetails projectManagerDetails = projectManagerDetailsService
-															.loadUserByUsername(jwtService.extractUsername(jwt));
-		
+		UserDetails user = projectManagerDetailsService.loadUserByUsername(jwtService.extractUsername(jwt));
+
 		// now validating the jwt
 		try {
-			if(jwtService.validateToken(jwt, projectManagerDetails)) {
-				authenticationResponse.setName(projectManagerDetails.getName());
-				authenticationResponse.setProjectName(projectManagerDetails.getProjectName());
+			if(jwtService.validateToken(jwt, user)) {
+				authenticationResponse.setName(user.getUsername());
 				authenticationResponse.setValid(true);
 				response = new ResponseEntity<AuthenticationResponse>(authenticationResponse, HttpStatus.OK);
 				logger.info("Successfully validated the jwt and sending response back!");

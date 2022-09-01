@@ -6,9 +6,8 @@ import java.util.Map;
 import java.util.function.Function;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-
-import com.mfpe.model.ProjectManagerDetails;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -45,9 +44,9 @@ public class JwtService {
         return extractExpiration(token).before(new Date());
     }
 
-    public String generateToken(ProjectManagerDetails projectManagerDetails) {
+    public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
-        return createToken(claims, projectManagerDetails.getUsername());
+        return createToken(claims, userDetails.getUsername());
     }
 
     private String createToken(Map<String, Object> claims, String username) {
@@ -57,8 +56,8 @@ public class JwtService {
                 .signWith(SignatureAlgorithm.HS256, SECRETKEY).compact();
     }
 
-    public Boolean validateToken(String token, ProjectManagerDetails projectManagerDetails) {
+    public Boolean validateToken(String token, UserDetails user) {
         final String username = extractUsername(token);
-        return (username.equals(projectManagerDetails.getUsername()) && !isTokenExpired(token));
+        return (username.equals(user.getUsername()) && !isTokenExpired(token));
     }
 }

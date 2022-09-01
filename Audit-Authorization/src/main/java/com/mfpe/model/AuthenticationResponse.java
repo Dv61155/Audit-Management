@@ -12,7 +12,6 @@ import lombok.NoArgsConstructor;
 @Component
 public class AuthenticationResponse {
 	private String name;
-	private String projectName;
 	private boolean isValid;
 
 	public String getName() {
@@ -21,14 +20,6 @@ public class AuthenticationResponse {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public String getProjectName() {
-		return projectName;
-	}
-
-	public void setProjectName(String projectName) {
-		this.projectName = projectName;
 	}
 
 	public boolean isValid() {
