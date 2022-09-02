@@ -50,7 +50,7 @@ function App() {
             }/>
             <Route path="/auditResponse" element={
                 <Layout>
-                    <Navbar/>
+                    <NavbarPage/>
                     <AuditResponse/>
                 </Layout>
             }/>
