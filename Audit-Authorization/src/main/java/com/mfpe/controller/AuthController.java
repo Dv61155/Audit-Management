@@ -70,24 +70,24 @@ public class AuthController {
 		
 		AuthenticationResponse authenticationResponse = new AuthenticationResponse("Invalid", false);
 		ResponseEntity<AuthenticationResponse> response = null;
-
+      
 		//first remove Bearer from Header
-		jwt = jwt.substring(7);
+		String token = jwt.substring(7);
 		
 		//check token
-		lOGGER.info("--------JWT :: "+jwt);
+		lOGGER.info("--------JWT :: "+token);
 		
 		
 		// check the jwt is proper or not
-		UserDetails user = projectManagerService.loadUserByUsername(jwtService.extractUsername(jwt));
+		
 
 		// now validating the jwt
 		try {
-			
-			if(jwtService.validateToken(jwt, user)) {
+			UserDetails user = projectManagerService.loadUserByUsername(jwtService.extractUsername(token));
+			if(jwtService.validateToken(token, user)) {
 				authenticationResponse.setName(user.getUsername());
 				authenticationResponse.setValid(true);
-				response = new ResponseEntity<AuthenticationResponse>(authenticationResponse, HttpStatus.OK);
+				response = (new ResponseEntity<AuthenticationResponse>(authenticationResponse, HttpStatus.OK));
 				lOGGER.info("Successfully validated the jwt and sending response back!");
 			}
 			else {
@@ -95,7 +95,7 @@ public class AuthController {
 				lOGGER.error("JWT Token validation failed!");
 			}
 		}catch (Exception e) {
-			response = new ResponseEntity<AuthenticationResponse>(authenticationResponse, HttpStatus.BAD_REQUEST);
+			response = new ResponseEntity<AuthenticationResponse>(authenticationResponse, HttpStatus.FORBIDDEN);
 			lOGGER.error("Exception occured whil validating JWT : Exception info : " + e.getMessage());
 		}
 		lOGGER.info("-------- Exiting /validate");
