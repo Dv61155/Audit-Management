@@ -16,9 +16,6 @@ public class AuthenticationResponse {
 	@NotEmpty(message = "Name is required")
 	private String name;
 	
-	@NotEmpty(message = "Project Name is Required")
-	private String projectName;
-	
 	private boolean isValid;
 
 	

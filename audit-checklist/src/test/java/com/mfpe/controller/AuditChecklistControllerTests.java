@@ -12,6 +12,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import com.mfpe.exception.EmptyInputException;
 import com.mfpe.model.AuditType;
 import com.mfpe.model.Question;
 import com.mfpe.service.AuthorizationService;
@@ -39,6 +40,7 @@ public class AuditChecklistControllerTests {
 		assertEquals("Audit Checklist Microservice is Active", controller.healthCheck());
 	}
 
+	
 	@Test
 	public void testAuditChecklistQuestions() {
 		List<Question> questions = new ArrayList<Question>();
