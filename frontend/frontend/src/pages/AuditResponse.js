@@ -49,6 +49,7 @@ export const AuditResponse = () => {
                                                     <th>Audit ID</th>
                                                     <th>Project Name</th>
                                                     <th>Remedial Action Duration</th>
+                                                    <th>Status</th>
                                                 </tr>
                                                 </thead>
                                                 <tbody>
@@ -56,6 +57,7 @@ export const AuditResponse = () => {
                                                     <td>{data.auditId}</td>
                                                     <td>{data.projectName}</td>
                                                     <td>{data.remedialActionDuration}</td>
+                                                    <td>{data.projectExecutionStatus}</td>
                                                 </tr>
                                                 </tbody>
                                             </Table>
