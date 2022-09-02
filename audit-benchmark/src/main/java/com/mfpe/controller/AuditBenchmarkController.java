@@ -42,10 +42,10 @@ public class AuditBenchmarkController {
 				auditBenchmarks = auditBenchmarkService.getAuditBenchmarkList();
 			} else {
 				logger.error("Failed to validate the JWT :: " + jwt);
+				auditBenchmarks = null;
 			}
 		} catch (Exception e) {
-			String[] arrOfStr = e.getMessage().split(":");
-			throw new FeignClientException(arrOfStr[arrOfStr.length - 1]);
+			throw new FeignClientException("Problem Occured with Authorization ");
 		}
 
 		return auditBenchmarks;

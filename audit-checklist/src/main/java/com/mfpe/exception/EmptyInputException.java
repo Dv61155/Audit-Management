@@ -17,7 +17,7 @@ public class EmptyInputException extends RuntimeException {
 	private String message;
 
 	public EmptyInputException(String message) {
-		super();
+		super(message);
 		this.message = message;
 	}
 	

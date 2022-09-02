@@ -12,7 +12,6 @@ import lombok.NoArgsConstructor;
 @Component
 public class AuthenticationResponse {
 	private String name;
-	private String projectName;
 	private boolean isValid;
 	
 }

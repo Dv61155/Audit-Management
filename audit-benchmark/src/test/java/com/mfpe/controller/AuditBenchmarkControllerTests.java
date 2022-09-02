@@ -38,10 +38,24 @@ class AuditBenchmarkControllerTests {
 		assertNotNull(controller);
 	}
 	
+	@Test
+	public void testInvalidGetAuditBenchmark() {
+		List<AuditBenchmark> auditBenchmarkList = new ArrayList<>();
+		auditBenchmarkList= null;
+		
+		//when jwt validate failed
+		when(authorizationService.validateJwt("false")).thenReturn(false);
+		
+		when(auditBenchmarkService.getAuditBenchmarkList()).thenReturn(auditBenchmarkList);
+		
+		assertEquals(auditBenchmarkList, controller.getAuditBenchmark("false"));
+		
+		
+	}
 	
 	
 	@Test
-	public void testGetAuditBenchmark() {
+	public void testValidGetAuditBenchmark() {
 		List<AuditBenchmark> auditBenchmarkList = new ArrayList<>();
 		auditBenchmarkList.add(new AuditBenchmark(1,"Internal",3));
 		auditBenchmarkList.add(new AuditBenchmark(2,"SOX",1));
@@ -51,10 +65,15 @@ class AuditBenchmarkControllerTests {
 		when(auditBenchmarkService.getAuditBenchmarkList()).thenReturn(auditBenchmarkList);
 		
 		assertEquals(auditBenchmarkList, controller.getAuditBenchmark("jwt"));
-
+		
 	}
 	
-
+	
+	
+	@Test
+	public void testHealthCheck() {
+		assertEquals("Audit Benchmark Microservice is Active", controller.healthCheck());
+	}
 	
 	
 

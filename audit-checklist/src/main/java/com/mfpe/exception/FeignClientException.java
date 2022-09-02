@@ -5,9 +5,10 @@ import org.springframework.stereotype.Component;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
+
 @NoArgsConstructor
 @Component
+@Data
 public class FeignClientException extends RuntimeException {
 	/**
 	 * 

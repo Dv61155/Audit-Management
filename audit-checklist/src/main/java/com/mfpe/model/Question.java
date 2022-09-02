@@ -30,8 +30,5 @@ public class Question {
 	
 	@Column(name="response")
 	private String response;
-
-
-	
 	
 }
