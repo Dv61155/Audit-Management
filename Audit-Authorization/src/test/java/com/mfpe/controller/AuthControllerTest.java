@@ -20,7 +20,7 @@ public class AuthControllerTest {
 
 	@Test
 	void loginTest() throws Exception {
-		AuthenticationRequest user = new AuthenticationRequest("Aditi Debnath", "aditi","aditi123","projectname");
+		AuthenticationRequest user = new AuthenticationRequest("Aditi Debnath", "aditi","aditi123");
 		ResponseEntity<String> response = authController.generateJwt(user);
 			assertEquals(200, response.getStatusCodeValue());
 		
@@ -28,7 +28,7 @@ public class AuthControllerTest {
 
 	@Test
 	void loginTestFailed() {
-		AuthenticationRequest user = new AuthenticationRequest("name", "username","pass","projectname");
+		AuthenticationRequest user = new AuthenticationRequest("name", "username","pass");
 		Exception e = assertThrows(Exception.class, () -> {
 			ResponseEntity<?> response = authController.generateJwt(user);
 			assertEquals(403, response.getStatusCodeValue()); // 403 forbidden
@@ -38,7 +38,7 @@ public class AuthControllerTest {
 	@Test
 	void validateTestValidtoken() throws Exception {
 
-		AuthenticationRequest user = new AuthenticationRequest("Aditi Debnath", "aditi","aditi123","projectname");
+		AuthenticationRequest user = new AuthenticationRequest("Aditi Debnath", "aditi","aditi123");
 		ResponseEntity<String> response = authController.generateJwt(user);
 		String token= response.getBody();
 		ResponseEntity<AuthenticationResponse> validity = authController.validateJwt("Bearer "+token);

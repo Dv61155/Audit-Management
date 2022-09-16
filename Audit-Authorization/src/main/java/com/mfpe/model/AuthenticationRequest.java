@@ -32,8 +32,6 @@ public class AuthenticationRequest {
 	@Column(name ="password")
 	private String password;
 	
-	@Column(name="project_name")
-	private String projectName;
 
 	public String getUsername() {
 		return username;
